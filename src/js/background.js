@@ -1,40 +1,69 @@
-var logger   = new Logger();
+var logger  = new Logger(),
+    firePHPTabId = 0,
+    lastUsedTab = 0,
+    isActive = true;
 
-// Add the X-FirePHP-Version header to all requests
-var filter, 
-    extraInfoSpec = ["blocking", "requestHeaders"];
-chrome.experimental.webRequest.onBeforeSendHeaders.addListener(
-    function(details) {
-        var headers = details.requestHeaders;
-        headers.push({
-            name  : "X-FirePHP-Version",
-            value : "0.6"
-        });
-        return {
-            requestHeaders: headers
+chrome.browserAction.onClicked.addListener(function(tab) {
+    if (firePHPTabId != tab.id) {
+        if (firePHPTabId > 0) {
+            chrome.tabs.query({}, function(tabs) {
+                tabs = _.pluck(tabs, 'id');
+                if (_.include(tabs, firePHPTabId) !== false) {
+                    chrome.tabs.reload(firePHPTabId);
+                    chrome.tabs.move(firePHPTabId, {'windowId': tab.windowId, 'index': tab.index+1});
+                    chrome.tabs.update(firePHPTabId, {'selected': true});
+                    return;
+                }
+            });
         }
-    }, 
-    /* RequestFilter */ filter, 
-    /* array of string */ extraInfoSpec
+
+        chrome.tabs.create({'windowId': tab.windowId, 'selected': true, 'url': 'Html/popup.html', 'index': tab.index+1},
+            function(createdTab) {
+                firePHPTabId = createdTab.id;
+        });
+
+    } else {
+        chrome.tabs.reload(firePHPTabId);
+    }
+});
+
+chrome.webRequest.onBeforeSendHeaders.addListener(
+    function(details) {
+        if (isActive) {
+            if (details.type == 'main_frame' && lastUsedTab != details.tabId) {
+                logger.clear();
+                lastUsedTab = details.tabId;
+
+                chrome.browserAction.setBadgeText({text: ''});
+            }
+
+            details.requestHeaders.push({'name': 'X-FirePHP-Version', 'value': '0.6'});
+        }
+        return {requestHeaders: details.requestHeaders};
+    },
+    {urls: ["https://*/*", "http://*/*"]},
+    ["requestHeaders", "blocking"]
 );
 
+// TODO:
+// chrome.webRequest.onErrorOccurred.addListener(
+//     function(details) {
+//         if (isActive && details.error == 'net::ERR_RESPONSE_HEADERS_TOO_BIG') {
+//             console.error(details.error+' at tab '+details.tabId+' with url: '+details.url);
+//             isActive = false;
+//             chrome.tabs.reload(details.tabId);
+//         }
+//     });
 
-// The dev panel sends us interesting requests
-// via dev_tools.js
-chrome.extension.onRequest.addListener(
-  function(request, sender, sendResponse) {
-    var headersMap = {};
-    request.headers.forEach(function (item) {
-        headersMap[item.name] = item.value;
-    });
-
-    var items = logger.log(headersMap);
-                 
-    if (items.length) {                
-        chrome.tabs.sendRequest(
-            request.tabId,
-            items
-        );
-    }
-  }
+chrome.webRequest.onCompleted.addListener(
+    function(details) {
+        if (isActive) {
+            var logsCount = logger.log(details).getLogsCount();
+            if (logsCount > 0) {
+                chrome.browserAction.setBadgeText({text: logsCount.toString()});
+            }
+        }
+    },
+    {urls: ["https://*/*", "http://*/*"]},
+    ["responseHeaders"]
 );
