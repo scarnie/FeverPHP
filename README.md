@@ -1,6 +1,7 @@
-FirePHP for Chrome (**for version 17 or newer**) is an extension that allows Google Chrome display FirePHP messages.
+**FeverPHP** (*for version 17 or newer*) is an extension that allows Google Chrome display FirePHP messages.
 
 More details about FirePHP: http://www.firephp.org/
+Extension can be found here: https://chrome.google.com/webstore/detail/gflkkfcnlgjimhccnhageickcoffgoea
 
 # Installation
 1. Download the source code
@@ -24,7 +25,7 @@ More details about FirePHP: http://www.firephp.org/
 - Pass all tests from http://reference.developercompanion.com/Tools/FirePHPCompanion/Run/Examples/
 - Move to developer console from separate tab
 - Handle ERR_RESPONSE_HEADERS_TOO_BIG
-- Code cleanup... This is my first time...
+- Code cleanup...
 
 # Created thanks to
 - **Andrew Nicolaou**: https://github.com/andrewn/firephp-chrome

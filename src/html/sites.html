@@ -1,0 +1,109 @@
+<script type="text/javascript" charset="utf-8">
+    function Sites() {
+        this.values = [];
+        
+        if (localStorage['sites'] !== undefined && localStorage['sites'].length > 0) {
+            this.values = JSON.parse(localStorage['sites']);
+        }
+    }
+        
+    Sites.prototype.addButton = function(e) {
+        if ($('#addFilter textarea').val().length > 0) {
+            if (_.indexOf(this.values, $('#addFilter textarea').val()) < 0) {
+                this.values.push($('#addFilter textarea').val());
+                this.save();
+                this.refreshList();
+            }
+            $('#addFilter textarea').val('');
+        }
+    };
+    
+    Sites.prototype.removeButton = function(e) {
+        this.values.splice($(e.target).data('key'), 1);
+        this.save();
+        if (this.values.length <= 0) {
+           $('#filterList').hide(); 
+        } else {
+            this.refreshList();
+        }
+    };
+    
+    Sites.prototype.refreshList = function() {
+        $("#filterList ul").html('');
+        if (this.values.length > 0) {
+            _.each(this.values, function(value, key) {
+                var html = '<li>'+value+' [<a href="javascript:void(0);" id="removeButton" data-key="'+key+'" class="red">x</a>]</li>';
+                $('#filterList ul').append(html);
+            });
+            
+            $('#filterList').show();
+        }
+        
+    };
+    
+    Sites.prototype.save = function() {
+        if (this.values.length > 0) {
+            localStorage['sites'] = JSON.stringify(this.values);
+        } else {
+            localStorage['sites'] = '';
+        }
+    };
+
+    $(document).ready(function() {
+        var sites = new Sites();
+        
+        sites.refreshList();
+        
+        $('#sitesBox')
+            .on('click', '#addFilter input[name=addButton]', $.proxy(sites.addButton, sites))
+            .on('click', '#removeButton', $.proxy(sites.removeButton, sites));
+            
+        $('#addFilter textarea')
+            .textext({
+                plugins : 'prompt autocomplete',
+                prompt: 'Type filter...'
+            })
+            .bind('getSuggestions', function(e, data) {
+                var self = this;
+                chrome.tabs.query({}, function(tabs) {
+                    var result = [],
+                        textext = $(e.target).textext()[0],
+                        query = (data ? data.query : '') || '',
+                        re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+                        
+                    tabs = _.pluck(tabs, 'url');
+                    _.each(tabs, function(url) {
+                        if (url = url.match(re)) {
+                            url = url[1].toString().replace('www.', '');
+                            if (query.length <= 0 || url.indexOf(query) >= 0) {
+                                if (_.indexOf(result, url) < 0) {
+                                    result.push(url); 
+                                }
+                            }
+                        }
+                    });
+
+                    $(self).trigger(
+                        'setSuggestions',
+                        { result : result }
+                    );
+                });
+            })
+            .bind('enterKeyPress', function(e) {
+                sites.addButton(e);
+            });
+    });
+</script>
+<div id="sitesBox" style="width:400px; display:block; max-height:400px; min-height:27px; overflow:auto">
+    <div id="addFilter">
+        <div style="margin:10px;">
+            <textarea rows="1" style="width:340px;"></textarea>
+            <input type="button" name="addButton" value="Add" style="margin-left:345px;">
+        </div>
+    </div>
+    <div id="filterList" style="display:none;">
+        <h2>Fever<strong>PHP</strong> is <span class="green">enabled</span> for sites:</h2>
+        <ul>
+        </ul>
+    </div>
+</div>

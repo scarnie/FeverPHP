@@ -28,7 +28,7 @@ pre {
    margin:5px 5px;
 }
 
-h1, h2 {
+#content h1, #content h2 {
    font-size:11px;
    font-weight: bold;
    border: 1px solid #F0F0F0;
@@ -176,11 +176,70 @@ pre {
    background-color: #FEE5E6;
 }
 
-.yellow { color: #b58900; }
-.orange { color: #cb4b16; }
-.red { color: #dc322f; }
-.magenta { color:#d33682; }
-.violet { color: #6c71c4; }
-.blue { color: #268bd2; }
-.cyan { color: #2aa198; }
-.green { color: #859900; }
+#sitesBox #addFilter {
+    position:absolute;
+    top:0;
+    left:0;
+    height:44px;
+    width:100%;
+    background-color:white;
+}
+
+#sitesBox #filterList {
+    margin-top:50px;
+}
+
+#sitesBox h1 {
+    font-size: 12px;
+    font-weight: bold;
+    margin:0;
+}
+
+#sitesBox h2 {
+    font-size: 11px;
+    font-weight: normal;
+    position:absolute;
+    top:22px;
+    left:10px;
+    background-color:white;
+}
+
+#sitesBox ul {
+    list-style: disc;
+    margin: 0;
+}
+
+#sitesBox li {
+    line-height: 20px;
+    color: gray;
+}
+
+#sitesBox textarea {
+    border-radius: 0;
+    border: 1px solid #9DACCC;
+    outline: none;
+    resize: none;
+    position: absolute;
+    z-index: 1;
+    background: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 3px 5px 4px 5px;
+    white-space: nowrap;
+    line-height: 13px;
+    height: auto;
+}
+
+#sitesBox .text-core {
+    display:inline;
+    width:340px;
+}
+
+.yellow { color: #b58900 !important; }
+.orange { color: #cb4b16 !important; }
+.red { color: #dc322f !important; }
+.magenta { color:#d33682 !important; }
+.violet { color: #6c71c4 !important; }
+.blue { color: #268bd2 !important; }
+.cyan { color: #2aa198 !important; }
+.green { color: #859900 !important; }

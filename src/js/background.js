@@ -1,7 +1,14 @@
 var logger  = new Logger(),
     firePHPTabId = 0,
-    lastUsedTab = 0,
+    lastUsedTab = 0;
+    
+if (localStorage !== undefined && localStorage['isActive'] !== undefined && localStorage['isActive'] === true) {
     isActive = true;
+    chrome.browserAction.setIcon({'path': '/Images/icon_on_small.png'});
+} else {
+    isActive = false;
+    chrome.browserAction.setIcon({'path': '/Images/icon_off_small.png'});
+}
 
 chrome.browserAction.onClicked.addListener(function(tab) {
     if (firePHPTabId != tab.id) {
@@ -55,15 +62,40 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 //         }
 //     });
 
-chrome.webRequest.onCompleted.addListener(
-    function(details) {
-        if (isActive) {
-            var logsCount = logger.log(details).getLogsCount();
-            if (logsCount > 0) {
-                chrome.browserAction.setBadgeText({text: logsCount.toString()});
-            }
+
+var webRequestListener = function(details) {
+    if (isActive) {
+        var logsCount = logger.log(details).getLogsCount();
+        if (logsCount > 0) {
+            chrome.browserAction.setBadgeText({text: logsCount.toString()});
         }
-    },
-    {urls: ["https://*/*", "http://*/*"]},
-    ["responseHeaders"]
-);
+    }
+};
+    
+var loadWebRequestListener = function(reload) {
+    if (reload === true) {
+        chrome.webRequest.onCompleted.removeListener(webRequestListener);
+    }
+    
+    var urls = [];
+    if (localStorage['sites'] !== undefined && localStorage['sites'].length > 0) {
+        var urls = JSON.parse(localStorage['sites']);
+    }
+
+    if (urls === undefined || urls.length <= 0) {
+        var urlsFilter = ["https://*/*", "http://*/*"];
+    } else {
+        var urlsFilter = [];
+        _.each(urls, function(url) {
+            urlsFilter.push("https://"+url+"/*", "http://"+url+"/*", "https://*."+url+"/*", "http://*."+url+"/*");
+        });
+    }
+    
+    chrome.webRequest.onCompleted.addListener(
+        webRequestListener,
+        {urls: urlsFilter},
+        ["responseHeaders"]
+    );
+}
+
+loadWebRequestListener(false);

@@ -4,15 +4,23 @@ $(document).ready(function() {
     if (chrome.extension.getBackgroundPage().isActive) {
         $('#toggleLink').html('enabled');
         $('#toggleLink').addClass('green').removeClass('red');
+        $('#sitesMenu').show();
     } else {
         $('#toggleLink').html('disabled');
         $('#toggleLink').addClass('red').removeClass('green');
+        $('#sitesMenu').hide();
+    }
+    
+    if (localStorage['sites'] !== undefined && localStorage['sites'].length > 0) {
+        $("#sitesLink").html(JSON.parse(localStorage['sites']).length).removeClass("yellow").addClass("green");
+    } else {
+        $("#sitesLink").html('all').addClass("yellow").removeClass("green");            
     }
 
     if (webView.logger.getLogsCount() > 0) {
         webView.generateHtmlLog();
     } else {
-        $('#content').html('<em>FirePHP for Chrome</em> suggests that you <strong>reload</strong> the page to track' +
+        $('#content').html('<em>Fever<strong>PHP</strong></em> suggests that you <strong>reload</strong> the page to track' +
                             ' <em>FirePHP</em> messages for all the requests.');
     }
 
@@ -21,8 +29,10 @@ $(document).ready(function() {
         .on('click', '.object', $.proxy(webView.togglePrintObject, webView));
     $('body')
         .on('click', '#toggleLink', $.proxy(webView.toggleApp, webView))
+        .on('click', '#sitesLink', $.proxy(webView.toggleSites, webView))
         .on('click', '#collapseAllLink', $.proxy(webView.collapseAll, webView))
-        .on('click', '#extendAllLink', $.proxy(webView.extendAll, webView));
+        .on('click', '#extendAllLink', $.proxy(webView.extendAll, webView))
+        .on('click', '#clearLogsLink', $.proxy(webView.clearLogs, webView));
 
     $('#content h1, #content h2, #content div.line').mouseenter(function(){
        var position = $(this).position();
