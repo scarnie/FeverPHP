@@ -36,6 +36,13 @@ WebView.prototype.extendAll = function(e) {
     });
 };
 
+WebView.prototype.clearLogs = function(e) {
+    this.logger.clear();
+    chrome.browserAction.setBadgeText({text: ''});
+    $('#content').html('<em>Fever<strong>PHP</strong></em> suggests that you <strong>reload</strong> the page to track' +
+                        ' <em>FirePHP</em> messages for all the requests.');
+}
+
 WebView.prototype.togglePrintObject = function(e) {
     var result = '<pre style="width:'+$(window).width()*0.90+'px; height:'+$(window).height()*0.75+'px; overflow:auto;">'+
                     $(e.target).children("#html").html()+
@@ -47,12 +54,14 @@ WebView.prototype.toggleApp = function(e) {
     if (this.backgroundPage.isActive) {
        chrome.browserAction.setIcon({'path': '/Images/icon_off_small.png'});
        chrome.extension.getBackgroundPage().isActive = false;
+       localStorage['isActive'] = false;
        $('#toggleLink').html('disabled');
        $('#toggleLink').addClass('red').removeClass('green');
        chrome.browserAction.setBadgeText({text: ''});
     } else {
        chrome.browserAction.setIcon({'path': '/Images/icon_small.png'});
        chrome.extension.getBackgroundPage().isActive = true;
+       localStorage['isActive'] = true;
        $('#toggleLink').html('enabled');
        $('#toggleLink').addClass('green').removeClass('red');
        if (this.logger.getLogsCount() > 0)
