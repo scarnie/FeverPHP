@@ -1,6 +1,7 @@
 **FeverPHP** (*for version 17 or newer*) is an extension that allows Google Chrome display FirePHP messages.
 
 More details about FirePHP: http://www.firephp.org/
+
 Extension can be found here: https://chrome.google.com/webstore/detail/gflkkfcnlgjimhccnhageickcoffgoea
 
 # Installation
