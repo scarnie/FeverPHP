@@ -9,7 +9,6 @@ if (localStorage !== undefined && localStorage['isActive'] !== undefined && loca
     isActive = false;
     chrome.browserAction.setIcon({'path': '/Images/icon_off_small.png'});
 }
- 
 
 chrome.browserAction.onClicked.addListener(function(tab) {
     if (firePHPTabId != tab.id) {
