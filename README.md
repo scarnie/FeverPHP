@@ -1,6 +1,11 @@
 FirePHP for Chrome (**for version 17 or newer**) is an extension that allows Google Chrome display FirePHP messages.
 
 More details about FirePHP: http://www.firephp.org/
+<<<<<<< Updated upstream
+=======
+
+Extension can be found here: https://chrome.google.com/webstore/detail/gflkkfcnlgjimhccnhageickcoffgoea
+>>>>>>> Stashed changes
 
 # Installation
 1. Download the source code

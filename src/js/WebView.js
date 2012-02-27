@@ -24,15 +24,15 @@ WebView.prototype.toggleGroups = function(e) {
 
 WebView.prototype.collapseAll = function(e) {
     $('#content div.toggle').each(function(){
-        $(this).show();
-        $(this).prev('h1, h2, h3').removeClass('closed').addClass('open');
+        $(this).hide();
+        $(this).prev('h1, h2, h3').addClass('closed').removeClass('open');
     });
 };
 
 WebView.prototype.extendAll = function(e) {
     $('#content div.toggle').each(function(){
-        $(this).hide();
-        $(this).prev('h1, h2, h3').addClass('closed').removeClass('open');
+        $(this).show();
+        $(this).prev('h1, h2, h3').removeClass('closed').addClass('open');
     });
 };
 
