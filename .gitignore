@@ -1,5 +1,5 @@
 .DS_Store
 ._*
 .idea
-.tm_properties
 *.pem
+.tm_properties
