@@ -2,7 +2,7 @@ var logger  = new Logger(),
     firePHPTabId = 0,
     lastUsedTab = 0;
         
-if (localStorage !== undefined && localStorage['isActive'] !== undefined && localStorage['isActive'] === true) {
+if (localStorage !== undefined && localStorage['isActive'] !== undefined && localStorage['isActive'] === "true") {
     isActive = true;
     chrome.browserAction.setIcon({'path': '/Images/icon_on_small.png'});
 } else {
