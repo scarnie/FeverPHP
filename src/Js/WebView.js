@@ -183,18 +183,22 @@ WebView.prototype.tableType = function(log) {
             } else {
                 result += '<td>';
             }
-
-            result += value;
+            
+            if (typeof(value) == 'object') {
+                result += this.dumpObject(value);                
+            } else {
+                result += value;
+            }
 
             if (key === 0) {
                 result += '</th>';
             } else {
                 result += '</td>';
             }
-        });
+        }, this);
 
         result += '</tr>';
-    });
+    }, this);
 
     result += '</table></div></div>';
 
