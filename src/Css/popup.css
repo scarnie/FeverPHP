@@ -4,7 +4,7 @@ body {
    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
    line-height: 25px;
    min-width:800px;
-   overflow-x:hidden;
+   /*overflow-x:hidden;*/
 }
 
 a, a:active, a:visited {
