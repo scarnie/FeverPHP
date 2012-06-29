@@ -41,6 +41,14 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     }
 });
 
+chrome.tabs.onActivated.addListener(
+    function(activeInfo) {
+        if (firePHPTabId > 0 && activeInfo.tabId == firePHPTabId) {
+            chrome.tabs.reload(firePHPTabId);
+        }
+    }
+);
+
 chrome.webRequest.onBeforeSendHeaders.addListener(
     function(details) {
         if (isActive) {
