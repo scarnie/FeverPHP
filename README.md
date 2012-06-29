@@ -35,3 +35,10 @@ Extension can be found here: https://chrome.google.com/webstore/detail/gflkkfcnl
 # Attributions
 - **spirit20** icons: http://19eighty7.com/icons
 - **Boolean 1.1** icons: http://prax-08.deviantart.com/art/Boolean-1-1-166457851
+
+# Changelog
+## v0.1.4
+  - **NEW**: Auto-refresh FeverPHP tab when activating
+  - **FIX**: Switch to open FeverPHP tab when clicking FeverPHP tool button
+  - **FIX**: TABLE log now fits browser width
+  - **NEW**: Current TABLE row highlights for improved usability

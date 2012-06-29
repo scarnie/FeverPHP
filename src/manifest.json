@@ -1,12 +1,12 @@
 {
   "name": "FeverPHP",
-  "version": "0.1.3.1",
+  "version": "0.1.4.1",
   "minimum_chrome_version": "17.0",
   "description": "Adding support for parsing FirePHP messages from server",
   "background_page": "Html/background.html",
   "browser_action": {
       "default_icon": "Images/icon_small.png",
-      "default_title": "FeverPHP v0.1.3"
+      "default_title": "FeverPHP v0.1.4"
     },
   "icons": {
       "16": "Images/icon_16.png",
