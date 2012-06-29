@@ -43,13 +43,13 @@ abbr, acronym {
 }
 
 table {
-   table-layout: fixed;
    border-spacing: 0;
    border-collapse: collapse;
    color:#555;
    font-size: 11px !important;
    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
    line-height: 25px;
+   width: 100%;
 }
 
 table th {
@@ -59,9 +59,28 @@ table th {
    vertical-align: middle;
 }
 
+/* Event column */
+table td:nth-child(2) {
+   max-width: 90%;
+   width: 80%;
+   white-space: pre-wrap;
+}
+
+/* Parameters column */
+table td:nth-child(3) {
+   max-width: 20%;
+   white-space: pre-wrap;
+}
+
 table tr {
-   display: table-row !important;
    height: auto !important;
+   -webkit-transition: background-color .250s ease-in-out;
+   background-color: white;
+}
+
+/* highlight the row */
+table tr:hover {
+   background-color: #ddd;
 }
 
 table td {
