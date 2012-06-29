@@ -11,6 +11,13 @@ if (localStorage !== undefined && localStorage['isActive'] !== undefined && loca
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) {
+    var createTab = function() {
+        chrome.tabs.create({'windowId': tab.windowId, 'selected': true, 'url': 'Html/popup.html', 'index': tab.index+1},
+            function(createdTab) {
+                firePHPTabId = createdTab.id;
+        });
+    }
+
     if (firePHPTabId != tab.id) {
         if (firePHPTabId > 0) {
             chrome.tabs.query({}, function(tabs) {
@@ -21,13 +28,13 @@ chrome.browserAction.onClicked.addListener(function(tab) {
                     chrome.tabs.update(firePHPTabId, {'selected': true});
                     return;
                 }
+
+                createTab();
             });
+            return;
         }
 
-        chrome.tabs.create({'windowId': tab.windowId, 'selected': true, 'url': 'Html/popup.html', 'index': tab.index+1},
-            function(createdTab) {
-                firePHPTabId = createdTab.id;
-        });
+        createTab();
 
     } else {
         chrome.tabs.reload(firePHPTabId);
