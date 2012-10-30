@@ -37,6 +37,8 @@ Extension can be found here: https://chrome.google.com/webstore/detail/gflkkfcnl
 - **Boolean 1.1** icons: http://prax-08.deviantart.com/art/Boolean-1-1-166457851
 
 # Changelog
+## v0.1.4.2
+  - **FIX**: Updated to manifest version 2.0
 ## v0.1.4
   - **NEW**: Auto-refresh FeverPHP tab when activating
   - **FIX**: Switch to open FeverPHP tab when clicking FeverPHP tool button
